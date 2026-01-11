@@ -1,4 +1,4 @@
-/* --- EPIC TECH AI: LIQUID JOURNEY STYLE --- */
+/* --- EPIC TECH AI: LAYER PRIORITY FIX --- */
 :root {
     --cyan: #00f2ff;
     --magenta: #ff00ff;
@@ -15,61 +15,67 @@ body {
     background-color: var(--black);
     color: #fff;
     overflow: hidden;
-    cursor: crosshair;
 }
 
-/* --- THE DEPTH VIGNETTE --- */
-/* This is the secret to a smooth tunnel. It hides the geometry edges. */
+/* --- THE PORTAL LAYER --- */
+#portal {
+    background: #000;
+    z-index: 100;
+}
+
+/* CRITICAL: This ensures text doesn't steal the click from the box */
+#portal div, #portal h1, #portal p {
+    pointer-events: none;
+}
+
+/* CRITICAL: The box itself must be clickable */
+#drop-zone {
+    pointer-events: auto !important;
+    z-index: 110;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+#drop-zone:hover {
+    border-color: var(--cyan);
+    background: rgba(0, 242, 255, 0.05);
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
+}
+
+#enter-btn {
+    pointer-events: auto !important;
+    z-index: 110;
+}
+
+/* --- THE JOURNEY UI --- */
+#app {
+    transition: opacity 2s ease-in-out;
+}
+
+/* This allows clicks to pass through the UI to the 3D objects, 
+   except for buttons and links */
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+
+/* --- VIGNETTE --- */
 body::after {
     content: "";
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
-    background: radial-gradient(circle, transparent 15%, rgba(0,0,0,1) 90%);
+    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,1) 90%);
     z-index: 5;
     pointer-events: none;
 }
 
-/* --- THE NEURAL BLOOM --- */
+/* --- NEURAL BLOOM --- */
 #tunnel-canvas {
-    filter: blur(0.3px) brightness(1.2);
-    transition: filter 1s ease;
+    filter: brightness(1.1) contrast(1.1);
 }
 
-/* --- HUD GLASSMORPHISM --- */
 .backdrop-blur-xl {
-    backdrop-filter: blur(20px) saturate(150%);
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(0, 242, 255, 0.1);
-}
-
-/* --- INTERACTIVE STATES --- */
-button {
-    cursor: pointer;
-    pointer-events: auto;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-button:hover {
-    transform: translateY(-2px);
-    text-shadow: 0 0 10px var(--cyan);
-}
-
-#chaos-btn {
-    opacity: 0.5;
-}
-
-#chaos-btn:hover {
-    opacity: 1;
-    color: var(--magenta);
-}
-
-/* --- SEAMLESS TRANSITIONS --- */
-#app {
-    transition: opacity 3s ease-in-out;
-}
-
-/* Hide Scrollbars */
-::-webkit-scrollbar {
-    display: none;
+    backdrop-filter: blur(15px);
+    background: rgba(0, 0, 0, 0.5);
 }
