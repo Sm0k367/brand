@@ -1,87 +1,94 @@
-// --- EPIC TECH AI: PHASE 2 OPERATIONAL ---
+// --- EPIC TECH AI: WORMHOLE ENGINE ---
 let audioContext, analyzer, dataArray, source, audio;
 let isPlaying = false;
 let chaosMode = false;
+let movementSpeed = 0.002;
 
 const audioUpload = document.getElementById('audio-upload');
 const dropZone = document.getElementById('drop-zone');
 const enterBtn = document.getElementById('enter-btn');
 const chaosBtn = document.getElementById('chaos-btn');
 
-// --- THREE.JS: THE K-LUME MORPH ENGINE ---
+// --- THREE.JS: THE TUNNEL ARCHITECTURE ---
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ 
-    canvas: document.getElementById('liquid-canvas'), 
-    antialias: true,
-    alpha: true 
+    canvas: document.getElementById('tunnel-canvas'), 
+    antialias: true 
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// The Sovereign Geometry
-const geometry = new THREE.IcosahedronGeometry(2, 64);
-const originalPositions = geometry.attributes.position.array.slice();
-const material = new THREE.MeshStandardMaterial({
+// 1. Create the Spiral Path
+const points = [];
+for (let i = 0; i < 100; i++) {
+    points.push(new THREE.Vector3(
+        Math.sin(i * 0.2) * 2, 
+        Math.cos(i * 0.2) * 2, 
+        i * 5
+    ));
+}
+const path = new THREE.CatmullRomCurve3(points);
+
+// 2. Create the Tunnel Mesh
+const tunnelGeom = new THREE.TubeGeometry(path, 200, 1.5, 20, false);
+const tunnelMat = new THREE.MeshStandardMaterial({
     color: 0x00f2ff,
-    metalness: 1,
-    roughness: 0.05,
-    emissive: 0x001111
+    side: THREE.BackSide, // Visible from the inside
+    wireframe: true,
+    transparent: true,
+    opacity: 0.5
 });
-const blob = new THREE.Mesh(geometry, material);
-scene.add(blob);
+const tunnel = new THREE.Mesh(tunnelGeom, tunnelMat);
+scene.add(tunnel);
 
-// Lighting: Cinematic Saturation
-const light1 = new THREE.PointLight(0x00f2ff, 2, 50);
-light1.position.set(5, 5, 5);
-scene.add(light1);
-const light2 = new THREE.PointLight(0xff00ff, 1.5, 50);
-light2.position.set(-5, -5, 2);
-scene.add(light2);
-scene.add(new THREE.AmbientLight(0xffffff, 0.4));
-camera.position.z = 5;
-
-// --- CHAOS MODE TOGGLE ---
-chaosBtn.addEventListener('click', () => {
-    chaosMode = !chaosMode;
-    chaosBtn.innerText = chaosMode ? "Chaos: ON" : "Chaos: OFF";
-    chaosBtn.classList.toggle('btn-chaos-on');
-    document.body.classList.toggle('chaos-active');
+// 3. Floating "Pictures" (Neural Portals)
+const portals = [];
+const portalCount = 15;
+for(let i = 0; i < portalCount; i++) {
+    const pGeom = new THREE.PlaneGeometry(1.5, 1);
+    const pMat = new THREE.MeshBasicMaterial({ 
+        color: 0xff00ff, 
+        side: THREE.DoubleSide,
+        transparent: true,
+        opacity: 0.8,
+        wireframe: true // Visual placeholder for your "AI Art"
+    });
+    const portal = new THREE.Mesh(pGeom, pMat);
     
-    // Visual Handshake
-    if(chaosMode) {
-        material.emissive.setHex(0x330033);
-        document.getElementById('active-lyric').innerText = "SYSTEM_OVERLOAD: CHAOS_MODE_ACTIVE";
-        setTimeout(() => { if(chaosMode) document.getElementById('active-lyric').innerText = ""; }, 2000);
-    } else {
-        material.emissive.setHex(0x001111);
-        camera.position.set(0, 0, 5);
-    }
-});
+    // Position portals along the tunnel path
+    const pos = path.getPoint(i / portalCount);
+    portal.position.set(pos.x + (Math.random()-0.5), pos.y + (Math.random()-0.5), pos.z);
+    portal.lookAt(0,0,0);
+    scene.add(portal);
+    portals.push(portal);
+}
 
-// --- FILE INTERCEPTION ---
+// Lighting
+const pLight = new THREE.PointLight(0x00f2ff, 2, 20);
+scene.add(pLight);
+camera.position.z = 0;
+
+// --- AUDIO INTERFACE ---
 dropZone.addEventListener('click', () => audioUpload.click());
 audioUpload.addEventListener('change', handleFile);
 
 function handleFile(e) {
-    const file = e.target.files[0] || e.dataTransfer.files[0];
-    if (file && file.type.startsWith('audio/')) {
-        document.getElementById('upload-status').innerText = `SYSTEM ARMED: ${file.name.toUpperCase()}`;
+    const file = e.target.files[0];
+    if (file) {
+        document.getElementById('enter-btn').classList.remove('hidden');
         dropZone.classList.add('hidden');
-        enterBtn.classList.remove('hidden');
-        const url = URL.createObjectURL(file);
-        audio = new Audio(url);
+        audio = new Audio(URL.createObjectURL(file));
     }
 }
 
-// --- INITIALIZE OVERRIDE ---
 enterBtn.addEventListener('click', () => {
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
     source = audioContext.createMediaElementSource(audio);
     analyzer = audioContext.createAnalyser();
     source.connect(analyzer);
     analyzer.connect(audioContext.destination);
-    analyzer.fftSize = 512;
+    analyzer.fftSize = 256;
     dataArray = new Uint8Array(analyzer.frequencyBinCount);
 
     gsap.to("#portal", { opacity: 0, duration: 1.5, onComplete: () => {
@@ -92,70 +99,56 @@ enterBtn.addEventListener('click', () => {
     }});
 });
 
-// --- RENDER & CHAOS LOGIC ---
+// Chaos Mode Toggle
+chaosBtn.addEventListener('click', () => {
+    chaosMode = !chaosMode;
+    chaosBtn.innerText = chaosMode ? "Chaos: ON" : "Chaos: OFF";
+    chaosBtn.classList.toggle('btn-chaos-on');
+});
+
+// --- RENDER LOOP (The Travel) ---
+let progress = 0;
 function animate() {
     requestAnimationFrame(animate);
 
-    if (isPlaying && analyzer) {
+    if (isPlaying) {
         analyzer.getByteFrequencyData(dataArray);
+        const bass = dataArray[2];
+        const mid = dataArray[40];
+
+        // 1. Move camera forward thru tunnel
+        progress += (movementSpeed + (bass / 5000));
+        if (progress > 1) progress = 0;
         
-        const bass = dataArray[2]; 
-        const avg = dataArray.reduce((a, b) => a + b) / dataArray.length;
-        const time = Date.now() * 0.001;
+        const camPos = path.getPointAt(progress % 1);
+        const lookAtPos = path.getPointAt((progress + 0.01) % 1);
+        
+        camera.position.copy(camPos);
+        camera.lookAt(lookAtPos);
+        pLight.position.copy(camPos);
 
-        // Geometric Chaos Morphing Logic
-        const positions = geometry.attributes.position.array;
-        const multiplier = chaosMode ? 4.5 : 1.2; // Chaos mode makes the spikes 4x bigger
-
-        for (let i = 0; i < positions.length; i += 3) {
-            const x = originalPositions[i];
-            const y = originalPositions[i + 1];
-            const z = originalPositions[i + 2];
-            
-            // Chaos Math: Combining sine waves for organic distortion
-            const noise = Math.sin(x * multiplier + time) * Math.cos(y * multiplier + time) * (bass / 50);
-            
-            positions[i] = x + (x * noise);
-            positions[i+1] = y + (y * noise);
-            positions[i+2] = z + (z * noise);
-        }
-        geometry.attributes.position.needsUpdate = true;
-
-        // Camera Shake if Chaos is Active
-        if (chaosMode && bass > 150) {
-            camera.position.x = (Math.random() - 0.5) * 0.1;
-            camera.position.y = (Math.random() - 0.5) * 0.1;
+        // 2. React Tunnel Walls to music
+        tunnel.rotation.z += 0.01;
+        tunnelMat.opacity = 0.2 + (bass / 512);
+        
+        // 3. Chaos Distortion
+        if(chaosMode) {
+            tunnel.scale.set(1 + Math.sin(Date.now()*0.01)*0.2, 1, 1);
+            renderer.setClearColor(0x110011);
+        } else {
+            tunnel.scale.set(1,1,1);
+            renderer.setClearColor(0x000000);
         }
 
-        // Visual Feedback
-        blob.rotation.y += 0.005 + (avg / 1000);
-        light1.intensity = 1 + (bass / 50);
-        document.getElementById('freq-telemetry').innerText = `HZ: ${Math.round(avg * 4.32)} | CHAOS: ${chaosMode ? 'CRITICAL' : 'STABLE'}`;
-
-        // Glitch Trigger
+        // 4. Glitch effects
         if (bass > 210) {
             document.body.classList.add('glitch-active');
         } else {
             document.body.classList.remove('glitch-active');
         }
-    } else {
-        blob.rotation.y += 0.001;
     }
 
     renderer.render(scene, camera);
 }
-
-// --- CONTROLS ---
-document.getElementById('audio-toggle').addEventListener('click', () => {
-    if (isPlaying) { audio.pause(); } else { audio.play(); }
-    isPlaying = !isPlaying;
-    document.getElementById('audio-toggle').innerText = isPlaying ? "Pause Signal" : "Resume Signal";
-});
-
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
 
 animate();
