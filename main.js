@@ -1,19 +1,20 @@
-// --- CONFIGURATION ---
-const AUDIO_URL = 'your-audio-file.mp3'; // Replace with your Suno v5 exported track
-let audioContext, analyzer, dataArray, source;
+// --- CORE CONFIGURATION ---
+let audioContext, analyzer, dataArray, source, audio;
 let isPlaying = false;
+const audioUpload = document.getElementById('audio-upload');
+const dropZone = document.getElementById('drop-zone');
+const enterBtn = document.getElementById('enter-btn');
 
-// --- THREE.JS SETUP (The Liquid Metal) ---
+// --- THREE.JS ENGINE (K-LUME VISUALS) ---
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('liquid-canvas'), antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-// Create the Liquid Metal Blob (Icosahedron)
+// Liquid Metal Geometry
 const geometry = new THREE.IcosahedronGeometry(2, 64);
 const material = new THREE.MeshStandardMaterial({
     color: 0x00f2ff,
-    wireframe: false,
     metalness: 1,
     roughness: 0.1,
     emissive: 0x002222
@@ -21,112 +22,103 @@ const material = new THREE.MeshStandardMaterial({
 const blob = new THREE.Mesh(geometry, material);
 scene.add(blob);
 
-// Lighting for that "Chrome-Valve" look
-const light = new THREE.DirectionalLight(0xffffff, 1);
+// Lighting
+const light = new THREE.DirectionalLight(0xffffff, 2);
 light.position.set(5, 5, 5);
 scene.add(light);
-const ambientLight = new THREE.AmbientLight(0x404040, 2);
-scene.add(ambientLight);
-
+scene.add(new THREE.AmbientLight(0x404040, 2));
 camera.position.z = 5;
 
-// --- AUDIO ANALYZER SETUP ---
-const setupAudio = () => {
+// --- UPLOAD LOGIC ---
+dropZone.addEventListener('click', () => audioUpload.click());
+
+audioUpload.addEventListener('change', handleFile);
+dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = "#00f2ff"; });
+dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = "#374151"; });
+dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    handleFile({ target: { files: e.dataTransfer.files } });
+});
+
+function handleFile(e) {
+    const file = e.target.files[0];
+    if (file) {
+        document.getElementById('upload-status').innerText = `READY: ${file.name}`;
+        document.getElementById('file-name').innerText = file.name;
+        dropZone.classList.add('hidden');
+        enterBtn.classList.remove('hidden');
+        
+        // Create Blob URL for the audio
+        const url = URL.createObjectURL(file);
+        audio = new Audio(url);
+    }
+}
+
+// --- INITIALIZE NEURAL LINK ---
+enterBtn.addEventListener('click', () => {
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const audio = new Audio(AUDIO_URL);
-    audio.crossOrigin = "anonymous";
     source = audioContext.createMediaElementSource(audio);
     analyzer = audioContext.createAnalyser();
+    
     source.connect(analyzer);
     analyzer.connect(audioContext.destination);
     analyzer.fftSize = 256;
     dataArray = new Uint8Array(analyzer.frequencyBinCount);
-    return audio;
-};
 
-const audio = setupAudio();
+    gsap.to("#portal", { opacity: 0, duration: 1, onComplete: () => {
+        document.getElementById('portal').style.display = 'none';
+        document.getElementById('app').style.opacity = '1';
+        audio.play();
+        isPlaying = true;
+    }});
+});
 
-// --- ANIMATION LOOP ---
+// --- ANIMATION & FREQUENCY SYNC ---
 function animate() {
     requestAnimationFrame(animate);
 
     if (isPlaying && analyzer) {
         analyzer.getByteFrequencyData(dataArray);
         
-        // Get average frequency (Volume)
         const avg = dataArray.reduce((a, b) => a + b) / dataArray.length;
-        const bass = dataArray[2]; // Focus on the low-end Moog bass
+        const bass = dataArray[2]; // Focus on the Moog frequency
+        const mid = dataArray[40];
 
-        // Distort the Liquid Metal based on audio
-        const scale = 1 + (avg / 150);
+        // Kinetic Distortion
+        const scale = 1 + (avg / 120);
         blob.scale.set(scale, scale, scale);
-        blob.rotation.y += 0.01 + (avg / 1000);
-        blob.rotation.x += 0.005;
+        blob.rotation.y += 0.01 + (avg / 500);
+        
+        // Telemetry Update
+        document.getElementById('freq-telemetry').innerText = `HZ: ${Math.round(avg * 4.32)}`;
 
-        // Change color based on bass intensity
-        material.emissive.setHSL(0.5, 1, bass / 512);
+        // Chrome-Valve Color Shifting
+        material.emissive.setHSL(0.5 + (mid / 512), 1, bass / 512);
 
-        // UI Glitch Trigger
-        if (bass > 210) {
+        // Visual Pulse Glitch
+        if (bass > 215) {
             document.body.classList.add('glitch-active');
         } else {
             document.body.classList.remove('glitch-active');
         }
     } else {
-        // Idle motion
-        blob.rotation.y += 0.002;
+        blob.rotation.y += 0.002; // Idle drift
     }
 
     renderer.render(scene, camera);
 }
 
-// --- INTERACTION LOGIC ---
-document.getElementById('enter-btn').addEventListener('click', () => {
-    audioContext.resume().then(() => {
-        gsap.to("#portal", { opacity: 0, duration: 1, onComplete: () => {
-            document.getElementById('portal').style.display = 'none';
-            document.getElementById('app').style.opacity = '1';
-            audio.play();
-            isPlaying = true;
-            startLyricEngine();
-        }});
-    });
-});
-
+// --- CONTROLS ---
 document.getElementById('audio-toggle').addEventListener('click', () => {
-    if (isPlaying) {
-        audio.pause();
-        document.getElementById('audio-toggle').innerText = "Resume Signal";
-    } else {
-        audio.play();
-        document.getElementById('audio-toggle').innerText = "Pause Signal";
-    }
+    if (isPlaying) { audio.pause(); } else { audio.play(); }
     isPlaying = !isPlaying;
+    document.getElementById('audio-toggle').innerText = isPlaying ? "Pause Signal" : "Resume Signal";
 });
 
-// Window Resize
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
-
-// --- LYRIC ENGINE ---
-const lyrics = [
-    { time: 0, text: "System: Optimized." },
-    { time: 4, text: "DJ SMOKE STREAM... ENGAGE." },
-    { time: 10, text: "Welcome to the AI Lounge After Dark." },
-    { time: 15, text: "432Hz Neural Link Established." }
-];
-
-function startLyricEngine() {
-    setInterval(() => {
-        const currentTime = audio.currentTime;
-        const currentLyric = lyrics.findLast(l => l.time <= currentTime);
-        if (currentLyric) {
-            document.getElementById('active-lyric').innerText = currentLyric.text;
-        }
-    }, 100);
-}
 
 animate();
