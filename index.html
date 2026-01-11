@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SM0KEN420 | AI LOUNGE AFTER DARK</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-black text-white overflow-hidden font-['Orbitron']">
+
+    <div id="portal" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black transition-opacity duration-1000">
+        <div class="relative">
+            <div class="absolute inset-0 blur-2xl bg-magenta-500 opacity-20 animate-pulse"></div>
+            <h1 class="text-5xl md:text-8xl font-black tracking-tighter italic mb-8 relative">
+                SM0KEN<span class="text-[#00f2ff]">420</span>
+            </h1>
+        </div>
+        <p class="text-xs uppercase tracking-[0.5em] mb-12 text-gray-500">Calibrating 432Hz Neural Link...</p>
+        <button id="enter-btn" class="px-10 py-4 border border-[#00f2ff] hover:bg-[#00f2ff] hover:text-black transition-all duration-500 uppercase tracking-widest text-sm group">
+            Engage Override
+            <span class="block text-[10px] opacity-0 group-hover:opacity-100 transition-opacity">Enter the AI Lounge</span>
+        </button>
+    </div>
+
+    <main id="app" class="relative w-screen h-screen opacity-0 transition-opacity duration-2000">
+        <canvas id="liquid-canvas" class="absolute inset-0 z-0"></canvas>
+
+        <div class="relative z-10 w-full h-full flex flex-col justify-between p-6 md:p-12 pointer-events-none">
+            
+            <header class="flex justify-between items-start pointer-events-auto">
+                <div class="branding">
+                    <h2 class="text-2xl font-bold tracking-tighter">DJ SMOKE STREAM</h2>
+                    <p class="text-[10px] text-[#00f2ff] tracking-[0.3em]">SOVEREIGN ARCHITECT</p>
+                </div>
+                <div class="social-link">
+                    <a href="https://x.com/Sm0ken420" target="_blank" class="hover:text-[#00f2ff] transition-colors">
+                        X.COM/SM0KEN420
+                    </a>
+                </div>
+            </header>
+
+            <div class="flex flex-col items-center text-center">
+                <div id="lyric-container" class="h-32 flex items-center justify-center">
+                    <p id="active-lyric" class="text-2xl md:text-4xl font-bold italic tracking-tight opacity-80 uppercase leading-tight"></p>
+                </div>
+            </div>
+
+            <footer class="flex flex-col md:flex-row justify-between items-end gap-4 pointer-events-auto">
+                <div class="telemetry text-[10px] font-mono text-gray-400">
+                    <div>ENGINE: SUNO_V5_STABLE</div>
+                    <div>TUNING: 432HZ_HIGH_FIDELITY</div>
+                    <div id="bitrate">BITRATE: 16K_K-LUME</div>
+                </div>
+                
+                <div class="audio-controls flex items-center gap-8">
+                    <div class="visualizer-mini w-32 h-8 flex items-end gap-1">
+                        </div>
+                    <button id="audio-toggle" class="text-[#00f2ff] uppercase text-xs tracking-widest font-bold">
+                        Pause Signal
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
