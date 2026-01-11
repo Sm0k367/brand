@@ -1,87 +1,99 @@
-/* ROOT VARIABLES: The K-Lume Palette */
+/* --- SOVEREIGN DESIGN SYSTEM --- */
 :root {
     --neon-cyan: #00f2ff;
     --neon-magenta: #ff00ff;
-    --deep-black: #050505;
-    --glass-ui: rgba(255, 255, 255, 0.05);
+    --glass-bg: rgba(0, 0, 0, 0.7);
+    --border-glow: rgba(0, 242, 255, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    background-color: var(--deep-black);
-    cursor: crosshair; /* Adds that technical feel */
-    user-select: none;
+    background-color: #000;
+    color: #fff;
+    overflow: hidden;
+    cursor: crosshair;
 }
 
-/* THE PORTAL (Preloader) */
+/* --- THE SCANLINE OVERLAY (For that Cinematic Texture) --- */
+body::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 50;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
+
+/* --- PORTAL & UPLOAD ZONE --- */
 #portal {
     background: radial-gradient(circle at center, #111 0%, #000 100%);
+    z-index: 100;
 }
 
-#enter-btn {
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+#drop-zone {
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 0 20px rgba(0, 242, 255, 0.1);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
 }
 
-#enter-btn::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.4), transparent);
-    transition: 0.5s;
+#drop-zone:hover {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+    transform: scale(1.02);
 }
 
-#enter-btn:hover::before {
-    left: 100%;
+/* --- ARTIST DOSSIER (The Glass Panel) --- */
+.backdrop-blur-xl {
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
 }
 
-/* TYPOGRAPHY SHARPENING */
+/* --- TYPOGRAPHY SHARPENING --- */
 h1, h2, #active-lyric {
-    text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
-    letter-spacing: -0.05em;
+    text-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
+    filter: drop-shadow(0 0 5px rgba(255, 0, 255, 0.3));
 }
 
-/* LYRIC CONTAINER GLITCH EFFECT */
 #active-lyric {
-    background: linear-gradient(to bottom, #fff 0%, #aaa 100%);
+    background: linear-gradient(to bottom, #fff 20%, var(--neon-cyan) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: lyric-entry 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 
-@keyframes lyric-entry {
-    0% { transform: translateY(20px) skewX(-10deg); opacity: 0; filter: blur(10px); }
-    100% { transform: translateY(0) skewX(0); opacity: 1; filter: blur(0); }
-}
-
-/* MINI VISUALIZER BARS */
-.vis-bar {
-    width: 4px;
-    background: var(--neon-cyan);
-    transition: height 0.1s ease;
-    box-shadow: 0 0 5px var(--neon-cyan);
-}
-
-/* CUSTOM SCROLLBAR (Hidden for NAVI feel) */
-::-webkit-scrollbar {
-    display: none;
-}
-
-/* RESPONSIVE TWEAKS */
-@media (max-width: 768px) {
-    #active-lyric { font-size: 1.5rem; padding: 0 20px; }
-}
-
-/* GLITCH SHADER CLASS (Applied via JS during bass drops) */
+/* --- ANIMATIONS: GLITCH & CHAOS --- */
 .glitch-active {
-    animation: shake 0.2s infinite;
+    animation: rumble 0.15s infinite linear;
 }
 
-@keyframes shake {
-    0% { transform: translate(0,0); }
-    25% { transform: translate(2px, -2px); filter: hue-rotate(90deg); }
-    50% { transform: translate(-2px, 2px); }
-    75% { transform: translate(2px, 2px); filter: contrast(200%); }
-    100% { transform: translate(0,0); }
+@keyframes rumble {
+    0% { transform: translate(0,0) skew(0deg); }
+    25% { transform: translate(-1px, 1px) skew(1deg); filter: hue-rotate(10deg); }
+    50% { transform: translate(1px, -1px) skew(-1deg); filter: contrast(150%); }
+    75% { transform: translate(-1px, -1px) skew(0.5deg); }
+    100% { transform: translate(0,0) skew(0deg); }
+}
+
+/* --- UTILITY --- */
+.pointer-events-auto {
+    pointer-events: auto;
+}
+
+.branding h2 {
+    font-family: 'Syncopate', sans-serif;
+    letter-spacing: -2px;
+}
+
+/* MOBILE RESPONSIVE HACKS */
+@media (max-width: 1024px) {
+    #active-lyric { font-size: 2rem; }
+    .status-indicators { display: none; }
 }
