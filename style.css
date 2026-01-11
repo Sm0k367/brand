@@ -1,4 +1,4 @@
-/* --- EPIC TECH AI DESIGN SYSTEM --- */
+/* --- EPIC TECH AI: PHASE 2 DESIGN SYSTEM --- */
 :root {
     --neon-cyan: #00f2ff;
     --neon-magenta: #ff00ff;
@@ -17,9 +17,10 @@ body {
     color: #fff;
     overflow: hidden;
     cursor: crosshair;
+    transition: filter 0.3s ease;
 }
 
-/* --- THE SCANLINE TEXTURE --- */
+/* --- THE CRT SCANLINE OVERLAY --- */
 body::after {
     content: "";
     position: fixed;
@@ -32,7 +33,21 @@ body::after {
     pointer-events: none;
 }
 
-/* --- PORTAL & UPLOAD ZONE --- */
+/* --- CHAOS MODE: VISUAL OVERLOAD --- */
+.chaos-active {
+    filter: contrast(1.4) saturate(1.8) hue-rotate(15deg);
+}
+
+.chaos-active canvas {
+    animation: chaos-shake 0.1s infinite alternate;
+}
+
+@keyframes chaos-shake {
+    0% { transform: translate(1px, 1px) scale(1.02); }
+    100% { transform: translate(-1px, -1px) scale(1.04); }
+}
+
+/* --- UI PANELS --- */
 #portal {
     background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
     z-index: 100;
@@ -44,57 +59,52 @@ body::after {
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-#drop-zone:hover {
-    border-color: var(--neon-cyan);
-    box-shadow: 0 0 40px rgba(0, 242, 255, 0.15);
-    background: rgba(255, 255, 255, 0.02);
-}
-
-/* --- ARTIST DOSSIER GLASS --- */
 .backdrop-blur-xl {
     backdrop-filter: blur(25px) saturate(200%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    border-radius: 2px;
 }
 
-/* --- COMMUNITY BUTTON GLOW --- */
+/* --- BUTTON LOGIC --- */
+#chaos-btn.btn-chaos-on {
+    background-color: var(--neon-magenta) !important;
+    color: white !important;
+    box-shadow: 0 0 25px var(--neon-magenta);
+    border-color: #fff !important;
+}
+
 .community-tag a {
     text-shadow: 0 0 5px rgba(0, 242, 255, 0.5);
     animation: button-pulse 2s infinite ease-in-out;
 }
 
 @keyframes button-pulse {
-    0% { box-shadow: 0 0 5px rgba(0, 242, 255, 0.2); }
+    0% { box-shadow: 0 0 5px rgba(0, 242, 255, 0.1); }
     50% { box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); border-color: var(--neon-cyan); }
-    100% { box-shadow: 0 0 5px rgba(0, 242, 255, 0.2); }
+    100% { box-shadow: 0 0 5px rgba(0, 242, 255, 0.1); }
 }
 
-/* --- LYRICS & TYPOGRAPHY --- */
+/* --- TYPOGRAPHY --- */
 h1, h2, #active-lyric {
     text-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
     font-family: 'Orbitron', sans-serif;
 }
 
-#active-lyric {
-    background: linear-gradient(to bottom, #fff, #777);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-/* --- DYNAMIC CHAOS GLITCH --- */
+/* --- DYNAMIC GLITCH (BASS TRIGGERED) --- */
 .glitch-active {
     animation: shake 0.1s infinite;
 }
 
 @keyframes shake {
-    0% { transform: translate(0,0); filter: hue-rotate(0deg); }
-    33% { transform: translate(2px, -1px); filter: hue-rotate(45deg); }
-    66% { transform: translate(-2px, 1px); filter: contrast(1.5); }
+    0% { transform: translate(0,0); }
+    33% { transform: translate(3px, -2px); filter: hue-rotate(90deg); }
+    66% { transform: translate(-3px, 2px); filter: contrast(2); }
     100% { transform: translate(0,0); }
 }
 
-/* --- MOBILE TWEAKS --- */
+/* --- UTILITY --- */
+.pointer-events-auto { pointer-events: auto; }
+
 @media (max-width: 1024px) {
     .lg\:block { display: none !important; }
     #active-lyric { font-size: 1.5rem; padding: 0 20px; }
