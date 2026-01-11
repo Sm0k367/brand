@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPIC TECH AI | NEURAL OVERRIDE v2</title>
+    <title>EPIC TECH AI | NEURAL WORMHOLE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
@@ -21,76 +21,42 @@
 
         <div id="drop-zone" class="w-80 h-44 border-2 border-dashed border-gray-700 hover:border-[#00f2ff] transition-all flex flex-col items-center justify-center group cursor-pointer bg-white/5 rounded-lg mb-8 p-4 text-center">
             <p class="text-[10px] uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors leading-relaxed">
-                Drop Sonic Weaponry Here<br>
-                <span class="text-[8px] opacity-50">Fueling the Creative Chaos</span>
+                Feed the Wormhole<br>
+                <span class="text-[8px] opacity-50">Initialize Chaos Protocol</span>
             </p>
             <input type="file" id="audio-upload" accept="audio/*" class="hidden">
         </div>
 
         <button id="enter-btn" class="hidden px-10 py-4 border border-[#00f2ff] bg-[#00f2ff] text-black transition-all duration-500 uppercase tracking-widest text-sm font-bold shadow-[0_0_30px_rgba(0,242,255,0.4)]">
-            Initialize Override
+            Begin Travel
         </button>
-        
-        <p id="upload-status" class="text-[9px] text-gray-500 mt-4 uppercase tracking-widest italic">Waiting for signal...</p>
     </div>
 
     <main id="app" class="relative w-screen h-screen opacity-0 transition-opacity duration-2000">
-        <canvas id="liquid-canvas" class="absolute inset-0 z-0"></canvas>
-
+        <canvas id="tunnel-canvas" class="absolute inset-0 z-0"></canvas>
+        
         <div class="relative z-10 w-full h-full flex flex-col justify-between p-6 md:p-12 pointer-events-none">
-            
             <header class="flex justify-between items-start pointer-events-auto">
                 <div class="branding">
                     <h2 class="text-2xl font-black tracking-tighter italic text-[#00f2ff]">EPIC TECH AI</h2>
-                    <p class="text-[9px] tracking-[0.4em] text-gray-400 uppercase">DJ SMOKE STREAM PROTOCOL</p>
+                    <p class="text-[9px] tracking-[0.4em] text-gray-400 uppercase">Wormhole Sequence Alpha</p>
                 </div>
                 <div class="status-indicators text-right font-mono text-[9px] text-cyan-400/50 hidden md:block">
-                    <div>COMMUNITY_ID: 1763463136298807762</div>
-                    <div>FUEL: CANNABIS_&_CAFFEINE_ACTIVE</div>
+                    <div>ALTITUDE: VARIABLE</div>
+                    <div>FUEL: STABLE</div>
                 </div>
             </header>
 
-            <div class="absolute left-6 md:left-12 top-1/4 max-w-xs pointer-events-auto bg-black/60 backdrop-blur-xl p-6 border-l-2 border-[#00f2ff] hidden lg:block shadow-2xl">
-                <h3 class="text-xs font-bold tracking-widest text-[#00f2ff] mb-2 uppercase">Artist Dossier: @Sm0ken420</h3>
-                <p class="text-[11px] leading-relaxed text-gray-300 italic mb-6">
-                    "Multimedia artist on a mission. Making music, videos, and AI art fueled by cannabis & caffeine. Join the creative chaos."
-                </p>
-                <div class="services border-t border-white/10 pt-4 space-y-3">
-                    <a href="https://intercom-bay.vercel.app" target="_blank" class="block text-[9px] text-white hover:text-[#00f2ff] transition-colors uppercase tracking-widest">
-                        → Atmosphere of your thoughts
-                    </a>
-                    <a href="https://x.com/Sm0ken420" target="_blank" class="block text-[9px] text-gray-400 hover:text-white transition-colors uppercase tracking-widest">
-                        → X.COM/SM0KEN420
-                    </a>
-                    <div class="community-tag mt-4">
-                        <a href="https://x.com/i/communities/1763463136298807762" target="_blank" class="block text-[8px] bg-[#00f2ff]/10 text-[#00f2ff] px-2 py-2 rounded border border-[#00f2ff]/20 hover:bg-[#00f2ff] hover:text-black transition-all text-center font-bold uppercase">
-                            Join Community
-                        </a>
-                    </div>
-                </div>
+            <div class="absolute left-6 bottom-32 max-w-[200px] pointer-events-auto bg-black/40 backdrop-blur-md p-4 border-l border-[#00f2ff]">
+                <h3 class="text-[10px] font-bold text-[#00f2ff] mb-2">@Sm0ken420</h3>
+                <a href="https://x.com/i/communities/1763463136298807762" target="_blank" class="block text-[8px] hover:text-white transition-colors uppercase">→ Join Collective</a>
             </div>
 
-            <div class="flex flex-col items-center text-center">
-                <div id="lyric-container" class="h-32 flex items-center justify-center">
-                    <p id="active-lyric" class="text-2xl md:text-5xl font-black italic tracking-tighter opacity-90 uppercase leading-tight"></p>
-                </div>
-            </div>
-
-            <footer class="flex flex-col md:flex-row justify-between items-end gap-4 pointer-events-auto">
-                <div class="telemetry text-[10px] font-mono text-gray-400">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_5px_#22c55e]"></span>
-                        LIVE_STREAM_ACTIVE
-                    </div>
-                    <div id="freq-telemetry" class="text-[#00f2ff]">HZ: ---</div>
-                </div>
-                
-                <div class="audio-controls flex items-center gap-6 md:gap-8">
-                    <button id="chaos-btn" class="px-3 py-1 border border-[#ff00ff] text-[#ff00ff] text-[9px] tracking-[0.3em] font-black hover:bg-[#ff00ff] hover:text-white transition-all uppercase">
-                        Chaos: OFF
-                    </button>
-                    <button id="audio-toggle" class="text-[#00f2ff] uppercase text-xs tracking-[0.3em] font-black hover:scale-110 transition-transform">Pause Signal</button>
-                    <button onclick="location.reload()" class="text-gray-500 uppercase text-[9px] tracking-widest hover:text-white transition-colors border border-white/10 px-3 py-1 bg-white/5">New Upload</button>
+            <footer class="flex justify-between items-end pointer-events-auto">
+                <div id="freq-telemetry" class="text-[9px] font-mono text-cyan-400/50">WORMHOLE_STABLE</div>
+                <div class="flex gap-4">
+                    <button id="chaos-btn" class="px-4 py-1 border border-magenta-500 text-magenta-500 text-[10px] font-bold uppercase hover:bg-magenta-500 hover:text-white transition-all">Chaos: OFF</button>
+                    <button id="audio-toggle" class="text-white text-[10px] font-bold uppercase border border-white/20 px-4 py-1">Pause</button>
                 </div>
             </footer>
         </div>
