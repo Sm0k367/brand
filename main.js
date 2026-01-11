@@ -1,11 +1,11 @@
-// --- SYSTEM CONFIG ---
+// --- EPIC TECH AI: CORE SYSTEM ---
 let audioContext, analyzer, dataArray, source, audio;
 let isPlaying = false;
 const audioUpload = document.getElementById('audio-upload');
 const dropZone = document.getElementById('drop-zone');
 const enterBtn = document.getElementById('enter-btn');
 
-// --- THREE.JS ENGINE: THE K-LUME CORE ---
+// --- THREE.JS: THE K-LUME MORPH ENGINE ---
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ 
@@ -14,17 +14,16 @@ const renderer = new THREE.WebGLRenderer({
     alpha: true 
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// Geometry: The Sovereign Blob
+// The Sovereign Geometry
 const geometry = new THREE.IcosahedronGeometry(2, 64);
-const originalPositions = geometry.attributes.position.array.slice(); // Copy for chaos morphing
+const originalPositions = geometry.attributes.position.array.slice();
 const material = new THREE.MeshStandardMaterial({
     color: 0x00f2ff,
     metalness: 1,
     roughness: 0.05,
-    emissive: 0x001111,
-    envMapIntensity: 2
+    emissive: 0x001111
 });
 const blob = new THREE.Mesh(geometry, material);
 scene.add(blob);
@@ -33,27 +32,20 @@ scene.add(blob);
 const light1 = new THREE.PointLight(0x00f2ff, 2, 50);
 light1.position.set(5, 5, 5);
 scene.add(light1);
-
 const light2 = new THREE.PointLight(0xff00ff, 1, 50);
 light2.position.set(-5, -5, 2);
 scene.add(light2);
-
-scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+scene.add(new THREE.AmbientLight(0xffffff, 0.4));
 camera.position.z = 5;
 
-// --- FILE INTERCEPTOR ---
+// --- FILE INTERCEPTION & INJECTION ---
 dropZone.addEventListener('click', () => audioUpload.click());
 audioUpload.addEventListener('change', handleFile);
-dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.style.borderColor = "#00f2ff"; });
-dropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    handleFile({ target: { files: e.dataTransfer.files } });
-});
 
 function handleFile(e) {
-    const file = e.target.files[0];
-    if (file) {
-        document.getElementById('upload-status').innerText = `SYSTEM ARMED: ${file.name}`;
+    const file = e.target.files[0] || e.dataTransfer.files[0];
+    if (file && file.type.startsWith('audio/')) {
+        document.getElementById('upload-status').innerText = `SYSTEM ARMED: ${file.name.toUpperCase()}`;
         dropZone.classList.add('hidden');
         enterBtn.classList.remove('hidden');
         const url = URL.createObjectURL(file);
@@ -61,8 +53,10 @@ function handleFile(e) {
     }
 }
 
-// --- OVERRIDE INITIALIZATION ---
+// --- INITIALIZE OVERRIDE ---
 enterBtn.addEventListener('click', () => {
+    console.log("%c EPIC TECH AI // COMMUNITY ID: 1763463136298807762 ", "background: #00f2ff; color: #000; font-weight: bold;");
+    
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
     source = audioContext.createMediaElementSource(audio);
     analyzer = audioContext.createAnalyser();
@@ -76,66 +70,57 @@ enterBtn.addEventListener('click', () => {
         document.getElementById('app').style.opacity = '1';
         audio.play();
         isPlaying = true;
+        
+        // Initial Lyric Sync
+        document.getElementById('active-lyric').innerText = "EPIC TECH OVERRIDE: ACTIVE";
+        setTimeout(() => { document.getElementById('active-lyric').innerText = ""; }, 3000);
     }});
 });
 
-// --- THE CHAOS MORPHING LOGIC ---
-function updateGeometry(bassIntensity) {
-    const positions = geometry.attributes.position.array;
-    const time = Date.now() * 0.001;
-
-    for (let i = 0; i < positions.length; i += 3) {
-        const x = originalPositions[i];
-        const y = originalPositions[i + 1];
-        const z = originalPositions[i + 2];
-        
-        // Simulating "Creative Chaos" via Simplex-style noise math
-        const noise = Math.sin(x * 1.5 + time) * Math.cos(y * 1.5 + time) * (bassIntensity / 50);
-        
-        positions[i] = x + (x * noise);
-        positions[i+1] = y + (y * noise);
-        positions[i+2] = z + (z * noise);
-    }
-    geometry.attributes.position.needsUpdate = true;
-}
-
-// --- MAIN RENDER LOOP ---
+// --- RENDER & CHAOS LOGIC ---
 function animate() {
     requestAnimationFrame(animate);
 
     if (isPlaying && analyzer) {
         analyzer.getByteFrequencyData(dataArray);
         
-        const bass = dataArray[2]; // G-Funk sub-frequency
-        const treble = dataArray[100]; // High-end sine whines
+        const bass = dataArray[2]; 
         const avg = dataArray.reduce((a, b) => a + b) / dataArray.length;
 
-        // Visual Synchronization
+        // Geometric Chaos Morphing
+        const positions = geometry.attributes.position.array;
+        const time = Date.now() * 0.001;
+        for (let i = 0; i < positions.length; i += 3) {
+            const x = originalPositions[i];
+            const y = originalPositions[i + 1];
+            const z = originalPositions[i + 2];
+            const noise = Math.sin(x * 1.2 + time) * Math.cos(y * 1.2 + time) * (bass / 45);
+            positions[i] = x + (x * noise);
+            positions[i+1] = y + (y * noise);
+            positions[i+2] = z + (z * noise);
+        }
+        geometry.attributes.position.needsUpdate = true;
+
+        // Visual Feedback
         blob.rotation.y += 0.005 + (avg / 1000);
-        blob.rotation.z += 0.002;
-        
-        updateGeometry(bass); // Trigger Chaos Morphing
+        light1.intensity = 1 + (bass / 60);
+        document.getElementById('freq-telemetry').innerText = `HZ: ${Math.round(avg * 4.32)} | FEED: X.COM/SM0KEN420`;
 
-        // Dynamic Lighting
-        light1.intensity = 1 + (bass / 50);
-        document.getElementById('freq-telemetry').innerText = `HZ: ${Math.round(avg * 4.32)} | CHAOS_LEVEL: ${Math.round(bass)}`;
-
-        // Glitch Trigger for Heavy Hits
-        if (bass > 220) {
+        if (bass > 225) {
             document.body.classList.add('glitch-active');
-            material.color.setHex(0xff00ff); // Shift to Magenta on drops
+            material.emissive.setHex(0xff00ff);
         } else {
             document.body.classList.remove('glitch-active');
-            material.color.setHex(0x00f2ff); // Return to Cyan
+            material.emissive.setHex(0x001111);
         }
     } else {
-        blob.rotation.y += 0.001; // Chilling mode
+        blob.rotation.y += 0.001; // Idle Chill
     }
 
     renderer.render(scene, camera);
 }
 
-// --- GLOBAL CONTROLS ---
+// --- WINDOW LOGIC ---
 document.getElementById('audio-toggle').addEventListener('click', () => {
     if (isPlaying) { audio.pause(); } else { audio.play(); }
     isPlaying = !isPlaying;
