@@ -1,8 +1,8 @@
-/* --- EPIC TECH AI: WORMHOLE PROTOCOL --- */
+/* --- EPIC TECH AI: JOURNEY DESIGN SYSTEM --- */
 :root {
-    --neon-cyan: #00f2ff;
-    --neon-magenta: #ff00ff;
-    --deep-black: #020202;
+    --cyan: #00f2ff;
+    --magenta: #ff00ff;
+    --deep-black: #000000;
 }
 
 * {
@@ -18,67 +18,57 @@ body {
     cursor: crosshair;
 }
 
-/* --- THE VIGNETTE (Creates Depth) --- */
+/* --- THE DEPTH VIGNETTE --- */
+/* This softens the edges and forces the eye into the center of the tunnel */
 body::after {
     content: "";
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
-    background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.9) 100%);
+    background: radial-gradient(circle, transparent 10%, rgba(0,0,0,1) 95%);
     z-index: 5;
     pointer-events: none;
 }
 
-/* --- HUD & UI STYLING --- */
+/* --- THE BLOOM (GLOW) --- */
+#tunnel-canvas {
+    filter: blur(0.4px) brightness(1.1) contrast(1.1);
+    transition: filter 1s ease;
+}
+
+/* --- UI COMPONENTS --- */
 #portal {
-    background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+    background: #000;
     z-index: 100;
 }
 
-.backdrop-blur-md {
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 242, 255, 0.2);
+header, footer {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-/* --- TUNNEL DISTORTION EFFECTS --- */
-.chaos-active {
-    filter: contrast(1.2) saturate(1.5);
+button {
+    cursor: pointer;
+    pointer-events: auto;
+    transition: all 0.3s ease;
 }
 
-/* Chromatic Aberration Pulse on Bass Hits */
+button:hover {
+    letter-spacing: 0.6em;
+    filter: drop-shadow(0 0 5px white);
+}
+
+/* --- CHAOS & GLITCH REFINEMENT --- */
 .glitch-active {
-    animation: pulse-bloom 0.2s ease-out;
+    animation: smooth-bloom 0.3s ease-out;
 }
 
-@keyframes pulse-bloom {
-    0% { filter: brightness(1) hue-rotate(0deg); }
-    50% { filter: brightness(1.5) hue-rotate(10deg); transform: scale(1.01); }
-    100% { filter: brightness(1) hue-rotate(0deg); }
+@keyframes smooth-bloom {
+    0% { filter: brightness(1); }
+    50% { filter: brightness(1.4) saturate(1.2); }
+    100% { filter: brightness(1); }
 }
 
-/* --- INTERACTIVE BUTTONS --- */
-#chaos-btn.btn-chaos-on {
-    background-color: var(--neon-magenta);
-    color: white;
-    box-shadow: 0 0 30px var(--neon-magenta);
-    border-color: #fff;
-}
-
-#enter-btn {
-    font-family: 'Syncopate', sans-serif;
-    letter-spacing: 0.5em;
-    transition: all 0.5s ease;
-}
-
-#enter-btn:hover {
-    background: white;
-    color: black;
-    box-shadow: 0 0 50px white;
-}
-
-/* --- UTILITY --- */
-.pointer-events-auto { pointer-events: auto; }
-
-@media (max-width: 768px) {
-    h1 { font-size: 3rem !important; }
+/* Tabular numbers for the frequency telemetry to prevent text-jumping */
+#freq-telemetry {
+    font-variant-numeric: tabular-nums;
 }
