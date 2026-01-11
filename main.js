@@ -1,11 +1,10 @@
-// --- EPIC TECH AI: NEURAL FLOW ENGINE v3 ---
+// --- EPIC TECH AI: TORUS KNOT JOURNEY ENGINE ---
 let audioContext, analyzer, dataArray, source, audio;
 let isPlaying = false;
-let chaosMode = false;
 let progress = 0;
-let baseSpeed = 0.0004; // Dampened for a "Floating" feel
+let speed = 0.0003; // Ultra-smooth base speed
 
-// --- THREE.JS SCENE SETUP ---
+// --- THREE.JS: THE KNOT ARCHITECTURE ---
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ 
@@ -15,19 +14,12 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// 1. Create a Smooth Spiral Path (Spline)
-const points = [];
-for (let i = 0; i < 100; i++) {
-    points.push(new THREE.Vector3(
-        Math.sin(i * 0.15) * 3, 
-        Math.cos(i * 0.15) * 3, 
-        i * 8
-    ));
-}
-const path = new THREE.CatmullRomCurve3(points);
+// 1. The Twisty Geometry: TorusKnot creates the " pretzel" path
+const knotGeom = new THREE.TorusKnotGeometry(10, 3, 200, 20, 2, 3);
+const tunnelGeom = new THREE.TubeGeometry(new THREE.CatmullRomCurve3(knotGeom.attributes.position.array.slice(0, 300).map((v, i, a) => {
+    if (i % 3 === 0) return new THREE.Vector3(a[i], a[i+1], a[i+2]);
+}).filter(v => v)), 150, 2, 12, false);
 
-// 2. Create the Liquid Tunnel
-const tunnelGeom = new THREE.TubeGeometry(path, 300, 2.5, 32, false);
 const tunnelMat = new THREE.MeshStandardMaterial({
     color: 0x00f2ff,
     side: THREE.BackSide,
@@ -38,57 +30,42 @@ const tunnelMat = new THREE.MeshStandardMaterial({
 const tunnel = new THREE.Mesh(tunnelGeom, tunnelMat);
 scene.add(tunnel);
 
-// 3. Floating Interactive Portals (The Art Gallery)
-const portals = [];
-const artImages = [
-    'https://picsum.photos/id/10/600/400', 
-    'https://picsum.photos/id/25/600/400',
-    'https://picsum.photos/id/35/600/400'
-];
-const loader = new THREE.TextureLoader();
+// 2. The Path for the Camera
+const cameraPath = new THREE.CatmullRomCurve3(
+    tunnelGeom.parameters.path.getPoints(200)
+);
 
-for (let i = 0; i < 12; i++) {
-    const pGeom = new THREE.PlaneGeometry(2, 1.5);
+// 3. Floating Art Portals (Seamlessly Blending)
+const portals = [];
+const textureLoader = new THREE.TextureLoader();
+const images = [
+    'https://picsum.photos/id/10/600/400',
+    'https://picsum.photos/id/28/600/400',
+    'https://picsum.photos/id/50/600/400'
+];
+
+for(let i = 0; i < 15; i++) {
+    const pGeom = new THREE.PlaneGeometry(2, 1.2);
     const pMat = new THREE.MeshBasicMaterial({ 
-        map: loader.load(artImages[i % artImages.length]),
-        transparent: true, 
-        opacity: 0.7,
+        map: textureLoader.load(images[i % images.length]),
+        transparent: true,
+        opacity: 0, // Starts invisible, fades in later
         side: THREE.DoubleSide
     });
     const portal = new THREE.Mesh(pGeom, pMat);
-    
-    // Position along the path with organic offset
-    const p = path.getPoint(i / 12);
-    portal.position.set(p.x + (Math.random()-0.5)*2, p.y + (Math.random()-0.5)*2, p.z);
-    portal.lookAt(p.x, p.y, p.z + 10);
-    
+    const pos = cameraPath.getPoint(i / 15);
+    portal.position.set(pos.x + (Math.random()-0.5)*3, pos.y + (Math.random()-0.5)*3, pos.z);
+    portal.lookAt(pos);
     scene.add(portal);
     portals.push(portal);
 }
 
-// Lighting: Soft Neural Glow
-const light = new THREE.PointLight(0x00f2ff, 4, 30);
-scene.add(light);
-scene.add(new THREE.AmbientLight(0xffffff, 0.2));
+// Lighting: Glowing Path
+const pLight = new THREE.PointLight(0x00f2ff, 10, 20);
+scene.add(pLight);
+scene.add(new THREE.AmbientLight(0xffffff, 0.1));
 
-// --- INTERACTION: RAYCASTING ---
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
-window.addEventListener('mousedown', (e) => {
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    raycaster.setFromCamera(mouse, camera);
-    const hits = raycaster.intersectObjects(portals);
-    
-    if (hits.length > 0) {
-        // Pulse color on hit
-        tunnelMat.color.setHSL(Math.random(), 0.8, 0.5);
-        gsap.to(hits[0].object.scale, { x: 1.5, y: 1.5, duration: 0.4, yoyo: true, repeat: 1 });
-    }
-});
-
-// --- AUDIO LOGIC ---
+// --- ENGINE LOGIC ---
 const audioUpload = document.getElementById('audio-upload');
 const enterBtn = document.getElementById('enter-btn');
 
@@ -117,46 +94,42 @@ enterBtn.addEventListener('click', () => {
     }});
 });
 
-// --- THE RENDER LOOP: SEAMLESS JOURNEY ---
+// --- THE RENDER LOOP: SMOOTH JOURNEY ---
 function animate() {
     requestAnimationFrame(animate);
 
     if (isPlaying) {
         analyzer.getByteFrequencyData(dataArray);
         const bass = dataArray[2];
-        const mid = dataArray[40];
 
-        // 1. Seamless Movement: Glide along the spline
-        progress += (baseSpeed + (bass / 15000));
-        if (progress > 0.95) progress = 0; // Seamless loop reset
-        
-        const camPos = path.getPointAt(progress);
-        const lookAtPos = path.getPointAt((progress + 0.02) % 1);
-        
-        camera.position.copy(camPos);
+        // 1. Smooth Glide: Movement along the Knot
+        progress += speed + (bass / 20000);
+        if (progress > 1) progress = 0;
+
+        const pos = cameraPath.getPointAt(progress);
+        const lookAtPos = cameraPath.getPointAt((progress + 0.01) % 1);
+
+        camera.position.lerp(pos, 0.1); // Smooth "leaning" into the turn
         camera.lookAt(lookAtPos);
-        light.position.copy(camPos);
+        pLight.position.copy(camera.position);
 
-        // 2. Liquid Color Cycle (HSL)
+        // 2. Liquid Colors: Ever-changing HSL hues
         const hue = (Date.now() * 0.00005) % 1;
-        tunnelMat.color.setHSL(hue, 0.7, 0.5);
-        light.color.setHSL(hue, 0.8, 0.5);
+        tunnelMat.color.setHSL(hue, 0.8, 0.5);
+        pLight.color.setHSL(hue, 0.9, 0.6);
 
-        // 3. Tunnel Rotation & Dynamics
-        tunnel.rotation.z += 0.002 + (mid / 2000);
-        tunnelMat.opacity = 0.1 + (bass / 400);
+        // 3. Wall Reactions
+        tunnel.rotation.z += 0.001;
+        tunnelMat.opacity = 0.1 + (bass / 500);
 
-        // 4. Portal Floating Animation
-        portals.forEach((p, idx) => {
+        // 4. Portal Fade-In/Out
+        portals.forEach(p => {
+            const dist = p.position.distanceTo(camera.position);
+            p.material.opacity = THREE.MathUtils.smoothstep(dist, 15, 5); // Fades in as you get close
             p.rotation.y += 0.005;
-            p.position.y += Math.sin(Date.now() * 0.001 + idx) * 0.002;
         });
 
-        // Telemetry Update
-        document.getElementById('freq-telemetry').innerText = `HZ: ${(bass * 4.32).toFixed(2)}`;
-        
-        if (bass > 215) document.body.classList.add('glitch-active');
-        else document.body.classList.remove('glitch-active');
+        document.getElementById('freq-telemetry').innerText = `HZ: ${(bass * 4.32).toFixed(1)}`;
     }
 
     renderer.render(scene, camera);
