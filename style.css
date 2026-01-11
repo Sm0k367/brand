@@ -1,9 +1,9 @@
-/* --- SOVEREIGN DESIGN SYSTEM --- */
+/* --- EPIC TECH AI DESIGN SYSTEM --- */
 :root {
     --neon-cyan: #00f2ff;
     --neon-magenta: #ff00ff;
-    --glass-bg: rgba(0, 0, 0, 0.7);
-    --border-glow: rgba(0, 242, 255, 0.3);
+    --deep-black: #050505;
+    --glass-ui: rgba(255, 255, 255, 0.05);
 }
 
 * {
@@ -13,87 +13,89 @@
 }
 
 body {
-    background-color: #000;
+    background-color: var(--deep-black);
     color: #fff;
     overflow: hidden;
     cursor: crosshair;
 }
 
-/* --- THE SCANLINE OVERLAY (For that Cinematic Texture) --- */
-body::before {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    z-index: 50;
-    background-size: 100% 2px, 3px 100%;
+/* --- THE SCANLINE TEXTURE --- */
+body::after {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    z-index: 40;
+    background-size: 100% 3px, 3px 100%;
     pointer-events: none;
 }
 
 /* --- PORTAL & UPLOAD ZONE --- */
 #portal {
-    background: radial-gradient(circle at center, #111 0%, #000 100%);
+    background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
     z-index: 100;
 }
 
 #drop-zone {
     backdrop-filter: blur(10px);
-    box-shadow: inset 0 0 20px rgba(0, 242, 255, 0.1);
-    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border: 1px dashed rgba(0, 242, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #drop-zone:hover {
     border-color: var(--neon-cyan);
-    box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
-    transform: scale(1.02);
+    box-shadow: 0 0 40px rgba(0, 242, 255, 0.15);
+    background: rgba(255, 255, 255, 0.02);
 }
 
-/* --- ARTIST DOSSIER (The Glass Panel) --- */
+/* --- ARTIST DOSSIER GLASS --- */
 .backdrop-blur-xl {
-    backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(25px) saturate(200%);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
 }
 
-/* --- TYPOGRAPHY SHARPENING --- */
+/* --- COMMUNITY BUTTON GLOW --- */
+.community-tag a {
+    text-shadow: 0 0 5px rgba(0, 242, 255, 0.5);
+    animation: button-pulse 2s infinite ease-in-out;
+}
+
+@keyframes button-pulse {
+    0% { box-shadow: 0 0 5px rgba(0, 242, 255, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); border-color: var(--neon-cyan); }
+    100% { box-shadow: 0 0 5px rgba(0, 242, 255, 0.2); }
+}
+
+/* --- LYRICS & TYPOGRAPHY --- */
 h1, h2, #active-lyric {
-    text-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
-    filter: drop-shadow(0 0 5px rgba(255, 0, 255, 0.3));
+    text-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+    font-family: 'Orbitron', sans-serif;
 }
 
 #active-lyric {
-    background: linear-gradient(to bottom, #fff 20%, var(--neon-cyan) 100%);
+    background: linear-gradient(to bottom, #fff, #777);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
-/* --- ANIMATIONS: GLITCH & CHAOS --- */
+/* --- DYNAMIC CHAOS GLITCH --- */
 .glitch-active {
-    animation: rumble 0.15s infinite linear;
+    animation: shake 0.1s infinite;
 }
 
-@keyframes rumble {
-    0% { transform: translate(0,0) skew(0deg); }
-    25% { transform: translate(-1px, 1px) skew(1deg); filter: hue-rotate(10deg); }
-    50% { transform: translate(1px, -1px) skew(-1deg); filter: contrast(150%); }
-    75% { transform: translate(-1px, -1px) skew(0.5deg); }
-    100% { transform: translate(0,0) skew(0deg); }
+@keyframes shake {
+    0% { transform: translate(0,0); filter: hue-rotate(0deg); }
+    33% { transform: translate(2px, -1px); filter: hue-rotate(45deg); }
+    66% { transform: translate(-2px, 1px); filter: contrast(1.5); }
+    100% { transform: translate(0,0); }
 }
 
-/* --- UTILITY --- */
-.pointer-events-auto {
-    pointer-events: auto;
-}
-
-.branding h2 {
-    font-family: 'Syncopate', sans-serif;
-    letter-spacing: -2px;
-}
-
-/* MOBILE RESPONSIVE HACKS */
+/* --- MOBILE TWEAKS --- */
 @media (max-width: 1024px) {
-    #active-lyric { font-size: 2rem; }
-    .status-indicators { display: none; }
+    .lg\:block { display: none !important; }
+    #active-lyric { font-size: 1.5rem; padding: 0 20px; }
 }
