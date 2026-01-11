@@ -1,10 +1,10 @@
-// --- EPIC TECH AI: FLUID NEURAL ENGINE ---
+// --- EPIC TECH AI: TORUS KNOT NEURAL FLOW ---
 let audioContext, analyzer, dataArray, source, audio;
 let isPlaying = false;
 let progress = 0;
-let speed = 0.0002; 
+const speed = 0.00015; // Ultra-slow base speed for that "floating" feel
 
-// --- THREE.JS: THE TWISTY TUNNEL ---
+// --- THREE.JS: THE ARCHITECTURE ---
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ 
@@ -14,9 +14,10 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// Create a complex Torus Knot path
-const knot = new THREE.Curves.TorusKnotCurve(10, 3, 2, 3);
-const tunnelGeom = new THREE.TubeGeometry(knot, 200, 2.5, 20, true);
+// 1. Create a Torus Knot Path (The "Twisty-Turny" Logic)
+// Parameters: Radius, Tube, TubularSegments, RadialSegments, P, Q
+const knotCurve = new THREE.Curves.TorusKnotCurve(10, 3, 2, 3);
+const tunnelGeom = new THREE.TubeGeometry(knotCurve, 250, 2.5, 20, true);
 const tunnelMat = new THREE.MeshStandardMaterial({
     color: 0x00f2ff,
     side: THREE.BackSide,
@@ -27,11 +28,12 @@ const tunnelMat = new THREE.MeshStandardMaterial({
 const tunnel = new THREE.Mesh(tunnelGeom, tunnelMat);
 scene.add(tunnel);
 
+// 2. Lighting the Void
 const light = new THREE.PointLight(0x00f2ff, 15, 40);
 scene.add(light);
 scene.add(new THREE.AmbientLight(0xffffff, 0.1));
 
-// --- AUDIO UPLOAD HANDLING ---
+// --- AUDIO INTERFACE ---
 const audioUpload = document.getElementById('audio-upload');
 const statusText = document.getElementById('upload-status');
 const enterBtn = document.getElementById('enter-btn');
@@ -41,7 +43,7 @@ audioUpload.addEventListener('change', (e) => {
     if (file) {
         audio = new Audio(URL.createObjectURL(file));
         statusText.innerText = "SIGNAL SYNCED: " + file.name.substring(0, 15) + "...";
-        statusText.classList.add('text-[#00f2ff]', 'font-bold');
+        statusText.style.color = "#00f2ff";
         enterBtn.classList.remove('hidden');
     }
 });
@@ -54,43 +56,47 @@ enterBtn.addEventListener('click', () => {
     analyzer.connect(audioContext.destination);
     dataArray = new Uint8Array(analyzer.frequencyBinCount);
 
-    gsap.to("#portal", { opacity: 0, duration: 1.5, onComplete: () => {
+    gsap.to("#portal", { opacity: 0, duration: 2, onComplete: () => {
         document.getElementById('portal').style.display = 'none';
         document.getElementById('app').style.opacity = '1';
+        // Once the journey starts, enable the mouse for HUD links
+        document.getElementById('tunnel-canvas').style.pointerEvents = 'auto'; 
         audio.play();
         isPlaying = true;
     }});
 });
 
-// --- THE RENDER LOOP: SEAMLESS FLOW ---
+// --- THE RENDER LOOP: CINEMATIC JOURNEY ---
 function animate() {
     requestAnimationFrame(animate);
 
     if (isPlaying) {
         analyzer.getByteFrequencyData(dataArray);
-        const bass = dataArray[2];
+        const bass = dataArray[2]; // Deep frequencies
+        const mid = dataArray[40];  // Melodic frequencies
 
-        // Glide progress along the knot
-        progress += speed + (bass / 25000);
+        // 1. Seamless Movement: Glide along the knot
+        progress += speed + (bass / 30000);
         if (progress > 1) progress = 0;
 
-        const pos = knot.getPointAt(progress);
-        const lookAtPos = knot.getPointAt((progress + 0.01) % 1);
+        const pos = knotCurve.getPointAt(progress);
+        const lookAtPos = knotCurve.getPointAt((progress + 0.01) % 1);
 
-        // Smoothly move camera and light
+        // Lerp makes the camera "lean" into curves smoothly
         camera.position.lerp(pos, 0.05);
         camera.lookAt(lookAtPos);
         light.position.copy(camera.position);
 
-        // Cycle Colors seamlessly using HSL
-        const hue = (Date.now() * 0.00004) % 1;
+        // 2. Ever-Changing Tunnel (HSL Hue Cycle)
+        const hue = (Date.now() * 0.00005) % 1;
         tunnelMat.color.setHSL(hue, 0.7, 0.5);
         light.color.setHSL(hue, 0.9, 0.6);
 
-        // Tunnel dynamics
-        tunnel.rotation.z += 0.001;
+        // 3. Audio-Reactive Intensity
+        tunnel.rotation.z += 0.001 + (mid / 5000);
         tunnelMat.opacity = 0.1 + (bass / 600);
-        
+
+        // Update Telemetry
         document.getElementById('freq-telemetry').innerText = `HZ: ${(bass * 4.32).toFixed(1)}`;
     }
 
