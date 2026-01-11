@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SM0KEN420 | AI LOUNGE AFTER DARK</title>
+    <title>SM0KEN420 | NEURAL UPLOAD INTERFACE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
@@ -11,55 +11,56 @@
 <body class="bg-black text-white overflow-hidden font-['Orbitron']">
 
     <div id="portal" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black transition-opacity duration-1000">
-        <div class="relative">
-            <div class="absolute inset-0 blur-2xl bg-magenta-500 opacity-20 animate-pulse"></div>
-            <h1 class="text-5xl md:text-8xl font-black tracking-tighter italic mb-8 relative">
+        <div class="relative mb-8 text-center">
+            <div class="absolute inset-0 blur-3xl bg-cyan-500 opacity-20 animate-pulse"></div>
+            <h1 class="text-5xl md:text-8xl font-black tracking-tighter italic relative">
                 SM0KEN<span class="text-[#00f2ff]">420</span>
             </h1>
+            <p class="text-[10px] tracking-[0.5em] text-gray-500 mt-2">AI LOUNGE AFTER DARK // X.COM/SM0KEN420</p>
         </div>
-        <p class="text-xs uppercase tracking-[0.5em] mb-12 text-gray-500">Calibrating 432Hz Neural Link...</p>
-        <button id="enter-btn" class="px-10 py-4 border border-[#00f2ff] hover:bg-[#00f2ff] hover:text-black transition-all duration-500 uppercase tracking-widest text-sm group">
-            Engage Override
-            <span class="block text-[10px] opacity-0 group-hover:opacity-100 transition-opacity">Enter the AI Lounge</span>
+
+        <div id="drop-zone" class="w-80 h-40 border-2 border-dashed border-gray-700 hover:border-[#00f2ff] transition-all flex flex-col items-center justify-center group cursor-pointer bg-white/5 rounded-lg mb-8">
+            <p class="text-[10px] uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors">Drop Sonic Weaponry Here</p>
+            <span class="text-[9px] text-gray-600 mt-2 uppercase">MP3 / WAV / OGG</span>
+            <input type="file" id="audio-upload" accept="audio/*" class="hidden">
+        </div>
+
+        <button id="enter-btn" class="hidden px-10 py-4 border border-[#00f2ff] bg-[#00f2ff] text-black transition-all duration-500 uppercase tracking-widest text-sm font-bold shadow-[0_0_30px_rgba(0,242,255,0.4)]">
+            Initialize Override
         </button>
+        
+        <p id="upload-status" class="text-[9px] text-gray-500 mt-4 uppercase tracking-tighter italic">Waiting for signal...</p>
     </div>
 
     <main id="app" class="relative w-screen h-screen opacity-0 transition-opacity duration-2000">
         <canvas id="liquid-canvas" class="absolute inset-0 z-0"></canvas>
 
         <div class="relative z-10 w-full h-full flex flex-col justify-between p-6 md:p-12 pointer-events-none">
-            
             <header class="flex justify-between items-start pointer-events-auto">
                 <div class="branding">
                     <h2 class="text-2xl font-bold tracking-tighter">DJ SMOKE STREAM</h2>
-                    <p class="text-[10px] text-[#00f2ff] tracking-[0.3em]">SOVEREIGN ARCHITECT</p>
+                    <p id="file-name" class="text-[10px] text-[#00f2ff] tracking-[0.3em] uppercase">SYSTEM IDLE</p>
                 </div>
                 <div class="social-link">
-                    <a href="https://x.com/Sm0ken420" target="_blank" class="hover:text-[#00f2ff] transition-colors">
-                        X.COM/SM0KEN420
-                    </a>
+                    <a href="https://x.com/Sm0ken420" target="_blank" class="hover:text-[#00f2ff] transition-colors text-xs tracking-widest">X.COM/SM0KEN420</a>
                 </div>
             </header>
 
             <div class="flex flex-col items-center text-center">
                 <div id="lyric-container" class="h-32 flex items-center justify-center">
-                    <p id="active-lyric" class="text-2xl md:text-4xl font-bold italic tracking-tight opacity-80 uppercase leading-tight"></p>
+                    <p id="active-lyric" class="text-2xl md:text-4xl font-bold italic tracking-tight opacity-80 uppercase leading-tight">SIGNAL SYNCED</p>
                 </div>
             </div>
 
             <footer class="flex flex-col md:flex-row justify-between items-end gap-4 pointer-events-auto">
                 <div class="telemetry text-[10px] font-mono text-gray-400">
-                    <div>ENGINE: SUNO_V5_STABLE</div>
-                    <div>TUNING: 432HZ_HIGH_FIDELITY</div>
-                    <div id="bitrate">BITRATE: 16K_K-LUME</div>
+                    <div>REAL-TIME_ANALYSIS: ACTIVE</div>
+                    <div id="freq-telemetry">HZ: ---</div>
                 </div>
                 
                 <div class="audio-controls flex items-center gap-8">
-                    <div class="visualizer-mini w-32 h-8 flex items-end gap-1">
-                        </div>
-                    <button id="audio-toggle" class="text-[#00f2ff] uppercase text-xs tracking-widest font-bold">
-                        Pause Signal
-                    </button>
+                    <button id="audio-toggle" class="text-[#00f2ff] uppercase text-xs tracking-widest font-bold">Pause Signal</button>
+                    <button onclick="location.reload()" class="text-gray-500 uppercase text-[10px] tracking-widest hover:text-white transition-colors">New Upload</button>
                 </div>
             </footer>
         </div>
