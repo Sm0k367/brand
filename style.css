@@ -1,4 +1,4 @@
-/* --- EPIC TECH AI: INTERACTION RECOVERY --- */
+/* --- EPIC TECH AI: STABLE VISUAL ENGINE --- */
 :root {
     --cyan: #00f2ff;
     --black: #000000;
@@ -14,52 +14,37 @@ body {
     background-color: var(--black);
     color: #fff;
     overflow: hidden;
+    cursor: crosshair;
 }
 
-/* --- THE PORTAL (LANDING PAGE) --- */
+/* --- THE PORTAL (LANDING) --- */
 #portal {
-    z-index: 9999; /* Force it to the very front */
-    background: #000;
+    z-index: 1000;
 }
 
-/* This ensures the invisible file input is the ONLY thing receiving clicks */
-input[type="file"] {
-    display: block !important;
-    cursor: pointer !important;
+#drop-zone {
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
 }
 
-/* --- THE JOURNEY UI (HIDDEN INITIALLY) --- */
+#drop-zone:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.1);
+}
+
+/* --- THE HUD & JOURNEY --- */
 #app {
     z-index: 10;
 }
 
-/* CRITICAL: Prevents the 3D canvas from blocking the upload UI */
-#tunnel-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
-    pointer-events: none; 
+.backdrop-blur-xl {
+    backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 242, 255, 0.1);
 }
 
-/* Restore pointer events only for HUD elements during the journey */
-.pointer-events-auto {
-    pointer-events: auto !important;
-}
-
-/* --- VISUALS --- */
-#drop-zone-visual {
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.03);
-    box-shadow: 0 0 40px rgba(0, 0, 0, 1);
-}
-
-.backdrop-blur-md {
-    backdrop-filter: blur(12px);
-    background: rgba(0, 0, 0, 0.6);
-}
-
-/* Depth Vignette: Softens the tunnel edges */
+/* The Vignette: Blends the tunnel edges into the dark */
 body::after {
     content: "";
     position: fixed;
@@ -68,4 +53,21 @@ body::after {
     background: radial-gradient(circle, transparent 20%, rgba(0,0,0,1) 95%);
     z-index: 5;
     pointer-events: none;
+}
+
+#tunnel-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* Interaction Controls */
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+
+button:hover {
+    text-shadow: 0 0 8px var(--cyan);
+    transform: scale(1.05);
+    transition: all 0.2s ease;
 }
