@@ -3,60 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPIC TECH AI | NEURAL WORMHOLE</title>
+    <title>EPIC TECH AI | NEURAL JOURNEY</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
 </head>
 <body class="bg-black text-white overflow-hidden font-['Orbitron']">
 
     <div id="portal" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black transition-opacity duration-1000">
         <div class="relative mb-8 text-center">
-            <div class="absolute inset-0 blur-3xl bg-cyan-500 opacity-20 animate-pulse"></div>
-            <h1 class="text-5xl md:text-8xl font-black tracking-tighter italic relative uppercase">
-                EPIC TECH <span class="text-[#00f2ff]">AI</span>
+            <h1 class="text-4xl md:text-6xl font-black tracking-[0.2em] italic uppercase text-white">
+                EPIC TECH <span class="text-cyan-400">AI</span>
             </h1>
-            <p class="text-[10px] tracking-[0.5em] text-gray-500 mt-2 uppercase">Multimedia Artist // @Sm0ken420</p>
+            <p class="text-[9px] tracking-[0.6em] text-gray-500 mt-4 uppercase">Multimedia Artist Protocol // @Sm0ken420</p>
         </div>
 
-        <div id="drop-zone" class="w-80 h-44 border-2 border-dashed border-gray-700 hover:border-[#00f2ff] transition-all flex flex-col items-center justify-center group cursor-pointer bg-white/5 rounded-lg mb-8 p-4 text-center">
-            <p class="text-[10px] uppercase tracking-widest text-gray-400 group-hover:text-white transition-colors leading-relaxed">
-                Feed the Wormhole<br>
-                <span class="text-[8px] opacity-50">Initialize Chaos Protocol</span>
-            </p>
+        <div id="drop-zone" class="w-72 h-40 border border-white/10 hover:border-cyan-400/50 transition-all flex flex-col items-center justify-center cursor-pointer bg-white/5 rounded-sm mb-8">
+            <p class="text-[9px] uppercase tracking-[0.3em] text-gray-400">Upload Sonic Signal</p>
             <input type="file" id="audio-upload" accept="audio/*" class="hidden">
         </div>
 
-        <button id="enter-btn" class="hidden px-10 py-4 border border-[#00f2ff] bg-[#00f2ff] text-black transition-all duration-500 uppercase tracking-widest text-sm font-bold shadow-[0_0_30px_rgba(0,242,255,0.4)]">
-            Begin Travel
+        <button id="enter-btn" class="hidden px-12 py-3 border border-white text-white hover:bg-white hover:text-black transition-all uppercase tracking-[0.4em] text-xs">
+            Initiate Flow
         </button>
     </div>
 
-    <main id="app" class="relative w-screen h-screen opacity-0 transition-opacity duration-2000">
+    <main id="app" class="relative w-screen h-screen opacity-0 transition-opacity duration-[3000ms]">
         <canvas id="tunnel-canvas" class="absolute inset-0 z-0"></canvas>
         
-        <div class="relative z-10 w-full h-full flex flex-col justify-between p-6 md:p-12 pointer-events-none">
-            <header class="flex justify-between items-start pointer-events-auto">
+        <div class="relative z-10 w-full h-full flex flex-col justify-between p-8 pointer-events-none">
+            <header class="flex justify-between items-start">
                 <div class="branding">
-                    <h2 class="text-2xl font-black tracking-tighter italic text-[#00f2ff]">EPIC TECH AI</h2>
-                    <p class="text-[9px] tracking-[0.4em] text-gray-400 uppercase">Wormhole Sequence Alpha</p>
+                    <h2 class="text-lg font-bold tracking-widest text-white/80 uppercase">Epic Tech AI</h2>
+                    <p class="text-[8px] tracking-[0.4em] text-white/30 uppercase">Neural Journey Sequence</p>
                 </div>
-                <div class="status-indicators text-right font-mono text-[9px] text-cyan-400/50 hidden md:block">
-                    <div>ALTITUDE: VARIABLE</div>
-                    <div>FUEL: STABLE</div>
+                <div class="telemetry font-mono text-[8px] text-cyan-400/40 text-right">
+                    <div id="status">SIGNAL: STABLE</div>
+                    <div id="freq-telemetry">HZ: 000.00</div>
                 </div>
             </header>
 
-            <div class="absolute left-6 bottom-32 max-w-[200px] pointer-events-auto bg-black/40 backdrop-blur-md p-4 border-l border-[#00f2ff]">
-                <h3 class="text-[10px] font-bold text-[#00f2ff] mb-2">@Sm0ken420</h3>
-                <a href="https://x.com/i/communities/1763463136298807762" target="_blank" class="block text-[8px] hover:text-white transition-colors uppercase">→ Join Collective</a>
-            </div>
-
             <footer class="flex justify-between items-end pointer-events-auto">
-                <div id="freq-telemetry" class="text-[9px] font-mono text-cyan-400/50">WORMHOLE_STABLE</div>
-                <div class="flex gap-4">
-                    <button id="chaos-btn" class="px-4 py-1 border border-magenta-500 text-magenta-500 text-[10px] font-bold uppercase hover:bg-magenta-500 hover:text-white transition-all">Chaos: OFF</button>
-                    <button id="audio-toggle" class="text-white text-[10px] font-bold uppercase border border-white/20 px-4 py-1">Pause</button>
+                <div class="links">
+                    <a href="https://x.com/i/communities/1763463136298807762" target="_blank" class="text-[8px] tracking-[0.3em] text-white/40 hover:text-white transition-colors uppercase">Join Collective</a>
+                </div>
+                <div class="controls flex items-center gap-8">
+                    <button id="audio-toggle" class="text-[9px] tracking-[0.4em] text-white/60 hover:text-cyan-400 transition-colors uppercase">Pause Signal</button>
+                    <button id="chaos-btn" class="text-[9px] tracking-[0.4em] text-white/20 hover:text-magenta-400 transition-colors uppercase">Chaos</button>
                 </div>
             </footer>
         </div>
