@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EPIC TECH AI | NEURAL OVERRIDE</title>
+    <title>EPIC TECH AI | NEURAL OVERRIDE v2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
@@ -53,7 +53,7 @@
             <div class="absolute left-6 md:left-12 top-1/4 max-w-xs pointer-events-auto bg-black/60 backdrop-blur-xl p-6 border-l-2 border-[#00f2ff] hidden lg:block shadow-2xl">
                 <h3 class="text-xs font-bold tracking-widest text-[#00f2ff] mb-2 uppercase">Artist Dossier: @Sm0ken420</h3>
                 <p class="text-[11px] leading-relaxed text-gray-300 italic mb-6">
-                    "Multimedia artist on a mission (or just chilling). Making music, videos, and AI art fueled by cannabis & caffeine. Join the creative chaos."
+                    "Multimedia artist on a mission. Making music, videos, and AI art fueled by cannabis & caffeine. Join the creative chaos."
                 </p>
                 <div class="services border-t border-white/10 pt-4 space-y-3">
                     <a href="https://intercom-bay.vercel.app" target="_blank" class="block text-[9px] text-white hover:text-[#00f2ff] transition-colors uppercase tracking-widest">
@@ -63,8 +63,8 @@
                         → X.COM/SM0KEN420
                     </a>
                     <div class="community-tag mt-4">
-                        <a href="https://x.com/i/communities/1763463136298807762" target="_blank" class="block text-[8px] bg-[#00f2ff]/10 text-[#00f2ff] px-2 py-2 rounded border border-[#00f2ff]/20 hover:bg-[#00f2ff] hover:text-black transition-all text-center font-bold">
-                            JOIN THE COMMUNITY: EPIC TECH AI
+                        <a href="https://x.com/i/communities/1763463136298807762" target="_blank" class="block text-[8px] bg-[#00f2ff]/10 text-[#00f2ff] px-2 py-2 rounded border border-[#00f2ff]/20 hover:bg-[#00f2ff] hover:text-black transition-all text-center font-bold uppercase">
+                            Join Community
                         </a>
                     </div>
                 </div>
@@ -85,7 +85,10 @@
                     <div id="freq-telemetry" class="text-[#00f2ff]">HZ: ---</div>
                 </div>
                 
-                <div class="audio-controls flex items-center gap-8">
+                <div class="audio-controls flex items-center gap-6 md:gap-8">
+                    <button id="chaos-btn" class="px-3 py-1 border border-[#ff00ff] text-[#ff00ff] text-[9px] tracking-[0.3em] font-black hover:bg-[#ff00ff] hover:text-white transition-all uppercase">
+                        Chaos: OFF
+                    </button>
                     <button id="audio-toggle" class="text-[#00f2ff] uppercase text-xs tracking-[0.3em] font-black hover:scale-110 transition-transform">Pause Signal</button>
                     <button onclick="location.reload()" class="text-gray-500 uppercase text-[9px] tracking-widest hover:text-white transition-colors border border-white/10 px-3 py-1 bg-white/5">New Upload</button>
                 </div>
