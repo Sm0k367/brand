@@ -1,34 +1,50 @@
-# 🌑 DJ SMOKE STREAM: THE NEURAL OVERRIDE INTERFACE (v2.0)
+# ⚡️ EPIC TECH AI // NEURAL OVERRIDE v2
+### Multimedia Artist Protocol by [@Sm0ken420](https://x.com/Sm0ken420)
 
-This is a **Universal Sonic Interface**. Unlike static players, this NAVI (Neural-Audio-Visual Interface) allows any user—or DJ Smoke Stream himself—to inject a local audio file and witness a real-time 16K "K-Lume" frequency analysis.
+![System Status](https://img.shields.io/badge/STATUS-OPERATIONAL-00f2ff?style=for-the-badge) 
+![Fuel](https://img.shields.io/badge/FUEL-CANNABIS_%26_CAFFEINE-magenta?style=for-the-badge)
+![Community](https://img.shields.io/badge/COMMUNITY-1763463136298807762-white?style=for-the-badge)
 
-## 🛠 Features
-* **Dynamic File Injection:** Drag-and-drop any MP3/WAV to trigger the visuals.
-* **Three.js Liquid Metal Engine:** Real-time 3D geometry distortion based on Moog-frequency bass levels.
-* **432Hz Telemetry:** Real-time HZ analysis displayed in the UI.
-* **High-Sovereign Aesthetic:** Designed specifically for high-contrast viewing on X.com Live Video.
+## 🛸 THE VISION
+This is a high-fidelity, browser-based **Neural Audio-Visual Interface (NAVI)**. Built for the **Epic Tech AI** collective, it transforms raw sonic weaponry into real-time 3D "Liquid Metal" geometry using Three.js and the Web Audio API.
 
-## 🚀 How to Launch
-
-### 1. Local Setup
-1.  Clone this repository or download `index.html`, `style.css`, and `main.js` into a single folder.
-2.  Open `index.html` in any modern browser (Chrome/Brave recommended).
-
-### 2. GitHub Pages Deployment (For your Followers)
-1.  Push these files to a public GitHub repository.
-2.  Enable **GitHub Pages** in the repository settings.
-3.  Share the link on **x.com/Sm0ken420**.
-4.  Followers can now visit the site, upload the tracks you drop, and experience the **AI Lounge After Dark** visuals on their own hardware.
-
-## 📺 Professional Stream Usage
-To use this as a background for your **X.com Live Stream**:
-1.  Open the webpage.
-2.  In **OBS** (or your streaming software), add a **Window Capture** source and select your browser.
-3.  Drop your latest Suno v5 "Chrome-Valve" banger into the interface.
-4.  The visuals will sync perfectly with your audio for your audience to see in real-time.
+> "Multimedia artist on a mission. Making music, videos, and AI art fueled by cannabis & caffeine. Join the creative chaos."
 
 ---
-**Architecture:** Neural-Audio-Visual Interface
-**Status:** Operational
-**Host:** x.com/Sm0ken420
-**Result: Absolute Dominance.**
+
+## ✅ CORE FEATURES
+* **Sovereign Interface:** A cinematic, glassmorphic UI built for the "Sovereign Architect."
+* **Liquid Morphing:** 3D Icosahedron geometry that reacts to sub-bass frequencies.
+* **Phase 2: Chaos Mode:** A destructive distortion toggle that pushes the vertex shaders and camera stabilization into "Critical Overload."
+* **Atmospheric Sync:** Visual feedback loops tuned to the energy of West Coast G-Funk and AI-synthesized 432Hz logic.
+
+---
+
+## 🛠 TECH STACK
+* **Engine:** [Three.js](https://threejs.org/) (WebGL)
+* **Animation:** [GSAP](https://greensock.com/gsap/) (GreenSock)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **Logic:** Pure JavaScript (Neural Frequency Analysis)
+
+---
+
+## 🚀 DEPLOYMENT
+1. **Clone the signal:** `git clone https://github.com/sm0k367/brand.git`
+2. **Initialize:** Open `index.html` in any modern browser.
+3. **Override:** Drop any `.mp3` or `.wav` file into the portal.
+
+---
+
+## 🏛 THE ARCHITECTURE
+* **Main Portal:** [Live Demo](https://sm0k367.github.io/brand/)
+* **Professional Services:** [Intercom-Bay](https://intercom-bay.vercel.app)
+* **Community:** [Epic Tech AI Collective](https://x.com/i/communities/1763463136298807762)
+
+---
+
+## ⚠️ SYSTEM LOG
+* **EST:** July 23, 1967
+* **SIGNAL:** Creative Chaos Active
+* **ENCRYPTION:** Standard Sovereign Override
+
+*“Atmosphere of your thoughts.”*
