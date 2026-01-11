@@ -1,8 +1,8 @@
-/* --- EPIC TECH AI: JOURNEY DESIGN SYSTEM --- */
+/* --- EPIC TECH AI: LIQUID JOURNEY STYLE --- */
 :root {
     --cyan: #00f2ff;
     --magenta: #ff00ff;
-    --deep-black: #000000;
+    --black: #000000;
 }
 
 * {
@@ -12,63 +12,64 @@
 }
 
 body {
-    background-color: var(--deep-black);
+    background-color: var(--black);
     color: #fff;
     overflow: hidden;
     cursor: crosshair;
 }
 
 /* --- THE DEPTH VIGNETTE --- */
-/* This softens the edges and forces the eye into the center of the tunnel */
+/* This is the secret to a smooth tunnel. It hides the geometry edges. */
 body::after {
     content: "";
     position: fixed;
     top: 0; left: 0;
     width: 100vw; height: 100vh;
-    background: radial-gradient(circle, transparent 10%, rgba(0,0,0,1) 95%);
+    background: radial-gradient(circle, transparent 15%, rgba(0,0,0,1) 90%);
     z-index: 5;
     pointer-events: none;
 }
 
-/* --- THE BLOOM (GLOW) --- */
+/* --- THE NEURAL BLOOM --- */
 #tunnel-canvas {
-    filter: blur(0.4px) brightness(1.1) contrast(1.1);
+    filter: blur(0.3px) brightness(1.2);
     transition: filter 1s ease;
 }
 
-/* --- UI COMPONENTS --- */
-#portal {
-    background: #000;
-    z-index: 100;
+/* --- HUD GLASSMORPHISM --- */
+.backdrop-blur-xl {
+    backdrop-filter: blur(20px) saturate(150%);
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(0, 242, 255, 0.1);
 }
 
-header, footer {
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-}
-
+/* --- INTERACTIVE STATES --- */
 button {
     cursor: pointer;
     pointer-events: auto;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 button:hover {
-    letter-spacing: 0.6em;
-    filter: drop-shadow(0 0 5px white);
+    transform: translateY(-2px);
+    text-shadow: 0 0 10px var(--cyan);
 }
 
-/* --- CHAOS & GLITCH REFINEMENT --- */
-.glitch-active {
-    animation: smooth-bloom 0.3s ease-out;
+#chaos-btn {
+    opacity: 0.5;
 }
 
-@keyframes smooth-bloom {
-    0% { filter: brightness(1); }
-    50% { filter: brightness(1.4) saturate(1.2); }
-    100% { filter: brightness(1); }
+#chaos-btn:hover {
+    opacity: 1;
+    color: var(--magenta);
 }
 
-/* Tabular numbers for the frequency telemetry to prevent text-jumping */
-#freq-telemetry {
-    font-variant-numeric: tabular-nums;
+/* --- SEAMLESS TRANSITIONS --- */
+#app {
+    transition: opacity 3s ease-in-out;
+}
+
+/* Hide Scrollbars */
+::-webkit-scrollbar {
+    display: none;
 }
